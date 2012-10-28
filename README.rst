@@ -5,8 +5,14 @@ A wraper for django-excel-response_ for DRY simple spreadsheets including a clas
 
 .. _django-excel-response: https://bitbucket.org/kmike/django-excel-response
 
+-----
 Use
 -----
+
+
+Column Specifications
+---------------------
+
 
 Django-excel-response makes it easy to make spreadsheets. 
 As you can see from its readme, it likes to get a queryset
@@ -100,7 +106,20 @@ Then ``ColSpec`` provides useful methods:
     return ExcelResponse(data_rows, headers=colspec.headers())
 
 
+Class-based View
+-----------------
+``ExcelView`` is a view object that returns a spreadsheet
+defined with a ``ColSpec``::
 
+    from excel_view import ExcelView, ColSpec, Col
+    
+    class Report(ExcelView):
+        colsepc = ColSpec(...)
+        file_name = "my_report"
+        queryset = MyObjects.filter(...)
+
+
+--------
 Testing
 --------
 
@@ -109,3 +128,48 @@ The ``testapp`` application sets up enough django context to run the tests::
   $ python manage.py test testapp
 
 
+
+--------
+ToDo
+--------
+
+- Allow sort orter to be specified, e.g::
+
+    colspec = ColSpec(
+        Col('one', ascending=2),
+        Col('two'),
+        Col('three', descending=1),
+    )
+
+  And then, ``colsepc.order()`` would retrn::
+
+    ['-three', 'one']
+
+  So I can say::
+
+      dataset = BusinessPlan.objects\
+                  .filter(... whatever ...)\
+                  .order_by(colspec.order())\
+                  .select_related(*colspec.related())\
+                  .values(*colspec.inputs())
+
+
+- Make it easier to write anonymous lambda functions to reduce and process values.
+  At the moment ``reduce`` functions take a list as arguyments, so if I want to 
+  write a lambda reduce function I have to accept a list::
+
+        Col('Profit', 
+            'sales', 
+            'cost_of_sales', 
+            reduce=lambda args: args[0] - args[1])
+
+  Which sucks. If reduce always takes a list (so we can do ``reduce=sum``).
+  Then give us a choice for ``function``. If there is a reduce function, 
+  pass the singleton result of calling reduce. Otherwise, pass all the
+  input values to ``function`` as ``*args``, then I can write 
+  lambda funcions like this::
+        
+        Col('Profit', 
+            'sales', 
+            'cost_of_sales', 
+            function=lambda income, cost: income - cost)
