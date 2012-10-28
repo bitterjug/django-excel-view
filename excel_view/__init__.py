@@ -1,12 +1,13 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.views.generic.base import View
+from django.views.generic.list import MultipleObjectMixin
 
 from excel_response import ExcelResponse
 
 from col_spec import ColSpec, Col
 
 
-class ExcelView(View):
+class ExcelView(View, MultipleObjectMixin):
     file_name = "spreadsheet"
     colspec = None
 
