@@ -13,7 +13,7 @@ return a simple spreadsheet using django-excel-response''',
     url='https://github.com/markskipper/django-excel-view',
     packages=['excel_view'],
     long_description=open('README.rst').read(),
-    requires=['xlwt', 'django-excel-response'],
+    install_requires=['xlwt', 'django-excel-response'],
     classifiers=[
     'Development Status :: 4 - Beta',
     'Environment :: Web Environment',
