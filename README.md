@@ -160,4 +160,4 @@ ToDo
             'cost_of_sales', 
             function=lambda income, cost: income - cost)
 
-
+- related function should probably return up to the last "__" rather than the first one
