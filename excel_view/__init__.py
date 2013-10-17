@@ -18,7 +18,7 @@ class ExcelView(View, MultipleObjectMixin):
         """
         return ExcelResponse(
             self.get_data(),
-            self.file_name)
+            self.get_file_name())
 
     def get_data(self, *args, **kwargs):
         if not self.colspec or \
@@ -31,3 +31,6 @@ class ExcelView(View, MultipleObjectMixin):
             .values(*self.colspec.inputs())
         return [self.colspec.headers()] +\
                [self.colspec.values(row) for row in dataset]
+
+    def get_file_name(self):
+        return self.file_name

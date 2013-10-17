@@ -108,6 +108,10 @@ Then `ColSpec` provides useful methods:
         file_name = "my_report"
         queryset = MyObjects.filter(...)
 
+Instead of the variables `file_name` and `queryset`, one can
+alternatively define the methods `get_file_name()` and
+`get_query_set()`.
+
 Testing
 -------
 
